@@ -1,0 +1,15 @@
+[project]
+name = "lzbot-5000"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "sarif-om",
+    "mcp",
+    "ipython",
+    "boto3",
+    "botocore",
+    "strands-agents",
+    "strands-agents-tools"
+]
