@@ -344,6 +344,7 @@ For issues, questions, or contributions:
 
 - [ ] parameterise inputs
 - [ ] refactor code into separate module
+- [ ] add option to generate draw.io XML/mermaid diagrams
 - [ ] add confluence MCP for design publishing
 - [ ] add confluence MCP for run books
 - [ ] add jira MCP for backlogs
