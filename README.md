@@ -350,6 +350,7 @@ For issues, questions, or contributions:
 - [ ] add jira MCP for backlogs
 - [ ] add github/gitlab integration for infrastructure-as-code
 - [ ] add CICD pipelines
+- [ ] add agentcore to host agents
 
 ## 📄 License
 
