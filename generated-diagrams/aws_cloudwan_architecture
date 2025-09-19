@@ -1,0 +1,119 @@
+digraph "AWS Cloud WAN - Melbourne & Sydney Multi-Region Architecture" {
+	graph [dpi=300 fontcolor="#2D3436" fontname="Sans-Serif" fontsize=15 label="AWS Cloud WAN - Melbourne & Sydney Multi-Region Architecture" nodesep=0.60 pad=2.0 rankdir=TB ranksep=0.75 size="16,12" splines=ortho]
+	node [fixedsize=true fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13 height=1.4 imagescale=true labelloc=b shape=box style=rounded width=1.4]
+	edge [color="#7B8894"]
+	subgraph "cluster_End Users" {
+		graph [bgcolor="#E5F5FD" fontname="Sans-Serif" fontsize=12 label="End Users" labeljust=l pencolor="#AEB6BE" rankdir=LR shape=box style=rounded]
+		"63443f1bb1f4454cabd318b5d8f5c632" [label="Melbourne Users" height=1.9 image="/Users/owenchung/.cache/uv/archive-v0/IQatjVLRJL6-IHoFzikoC/lib/python3.12/site-packages/resources/aws/general/users.png" shape=none]
+		e1e77014b54842408a3067957f7c0f01 [label="Sydney Users" height=1.9 image="/Users/owenchung/.cache/uv/archive-v0/IQatjVLRJL6-IHoFzikoC/lib/python3.12/site-packages/resources/aws/general/users.png" shape=none]
+	}
+	subgraph "cluster_Centralized Ingress (Sydney Primary)" {
+		graph [bgcolor="#E5F5FD" fontname="Sans-Serif" fontsize=12 label="Centralized Ingress (Sydney Primary)" labeljust=l pencolor="#AEB6BE" rankdir=LR shape=box style=rounded]
+		f39f81dc7b4340c0aa9cfe4f33abcfdd [label=CloudFront height=1.9 image="/Users/owenchung/.cache/uv/archive-v0/IQatjVLRJL6-IHoFzikoC/lib/python3.12/site-packages/resources/aws/network/cloudfront.png" shape=none]
+		a470697ff82b4fd7bebc2f596cadb295 [label=Route53 height=1.9 image="/Users/owenchung/.cache/uv/archive-v0/IQatjVLRJL6-IHoFzikoC/lib/python3.12/site-packages/resources/aws/network/route-53.png" shape=none]
+		"24f291d8b9434a4a8f5ba2754322b06f" [label="WAF & Shield" height=1.9 image="/Users/owenchung/.cache/uv/archive-v0/IQatjVLRJL6-IHoFzikoC/lib/python3.12/site-packages/resources/aws/security/waf.png" shape=none]
+	}
+	subgraph "cluster_AWS Cloud WAN Core Network" {
+		graph [bgcolor="#E5F5FD" fontname="Sans-Serif" fontsize=12 label="AWS Cloud WAN Core Network" labeljust=l pencolor="#AEB6BE" rankdir=LR shape=box style=rounded]
+		d1dcb4ab606b4c2bb8b26e43d8f988cf [label="Cloud WAN" height=1.9 image="/Users/owenchung/.cache/uv/archive-v0/IQatjVLRJL6-IHoFzikoC/lib/python3.12/site-packages/resources/aws/network/transit-gateway.png" shape=none]
+	}
+	subgraph "cluster_Melbourne Region (ap-southeast-4)" {
+		graph [bgcolor="#E5F5FD" fontname="Sans-Serif" fontsize=12 label="Melbourne Region (ap-southeast-4)" labeljust=l pencolor="#AEB6BE" rankdir=LR shape=box style=rounded]
+		subgraph "cluster_Inspection VPC" {
+			graph [bgcolor="#EBF3E7" fontname="Sans-Serif" fontsize=12 label="Inspection VPC" labeljust=l pencolor="#AEB6BE" rankdir=LR shape=box style=rounded]
+			"54ddcf9d714c4d0aadba20286924a828" [label="Gateway LB" height=1.9 image="/Users/owenchung/.cache/uv/archive-v0/IQatjVLRJL6-IHoFzikoC/lib/python3.12/site-packages/resources/aws/network/elastic-load-balancing.png" shape=none]
+			c643d2c6c1be46f09ab358f1a4ff025e [label="Network Firewall" height=1.9 image="/Users/owenchung/.cache/uv/archive-v0/IQatjVLRJL6-IHoFzikoC/lib/python3.12/site-packages/resources/aws/network/network-firewall.png" shape=none]
+		}
+		subgraph "cluster_Production VPCs" {
+			graph [bgcolor="#EBF3E7" fontname="Sans-Serif" fontsize=12 label="Production VPCs" labeljust=l pencolor="#AEB6BE" rankdir=LR shape=box style=rounded]
+			"29e5231f1cce4c008d5ee04be56859dd" [label="App VPC" height=1.9 image="/Users/owenchung/.cache/uv/archive-v0/IQatjVLRJL6-IHoFzikoC/lib/python3.12/site-packages/resources/aws/network/vpc.png" shape=none]
+			subgraph "cluster_Melbourne Workloads" {
+				graph [bgcolor="#ECE8F6" fontname="Sans-Serif" fontsize=12 label="Melbourne Workloads" labeljust=l pencolor="#AEB6BE" rankdir=LR shape=box style=rounded]
+				a29d8046ee2d42988da81746c214ef00 [label=ALB height=1.9 image="/Users/owenchung/.cache/uv/archive-v0/IQatjVLRJL6-IHoFzikoC/lib/python3.12/site-packages/resources/aws/network/elb-application-load-balancer.png" shape=none]
+				"8f27eed08f07440ca3bb912cb44f7b91" [label="App 1" height=1.9 image="/Users/owenchung/.cache/uv/archive-v0/IQatjVLRJL6-IHoFzikoC/lib/python3.12/site-packages/resources/aws/compute/elastic-container-service.png" shape=none]
+				"5b44b5414aa34d8b9c0547de95a7793e" [label="App 2" height=1.9 image="/Users/owenchung/.cache/uv/archive-v0/IQatjVLRJL6-IHoFzikoC/lib/python3.12/site-packages/resources/aws/compute/elastic-container-service.png" shape=none]
+				cc81b2fd80ec4d8eafdf74bcb6d65743 [label="App 3" height=1.9 image="/Users/owenchung/.cache/uv/archive-v0/IQatjVLRJL6-IHoFzikoC/lib/python3.12/site-packages/resources/aws/compute/elastic-container-service.png" shape=none]
+				a8af1632d99d4cbf9182b25da99f8810 [label="RDS Aurora" height=1.9 image="/Users/owenchung/.cache/uv/archive-v0/IQatjVLRJL6-IHoFzikoC/lib/python3.12/site-packages/resources/aws/database/aurora.png" shape=none]
+			}
+		}
+		subgraph "cluster_Egress VPC" {
+			graph [bgcolor="#EBF3E7" fontname="Sans-Serif" fontsize=12 label="Egress VPC" labeljust=l pencolor="#AEB6BE" rankdir=LR shape=box style=rounded]
+			"4a8076831f6d4e96b5729c86bf2b4fb0" [label="NAT Gateway" height=1.9 image="/Users/owenchung/.cache/uv/archive-v0/IQatjVLRJL6-IHoFzikoC/lib/python3.12/site-packages/resources/aws/network/nat-gateway.png" shape=none]
+			"0cae8a1eb3b345f7b1da30012826270f" [label=IGW height=1.9 image="/Users/owenchung/.cache/uv/archive-v0/IQatjVLRJL6-IHoFzikoC/lib/python3.12/site-packages/resources/aws/network/internet-gateway.png" shape=none]
+		}
+	}
+	subgraph "cluster_Sydney Region (ap-southeast-2)" {
+		graph [bgcolor="#E5F5FD" fontname="Sans-Serif" fontsize=12 label="Sydney Region (ap-southeast-2)" labeljust=l pencolor="#AEB6BE" rankdir=LR shape=box style=rounded]
+		subgraph "cluster_Inspection VPC" {
+			graph [bgcolor="#EBF3E7" fontname="Sans-Serif" fontsize=12 label="Inspection VPC" labeljust=l pencolor="#AEB6BE" rankdir=LR shape=box style=rounded]
+			"38594573dfbc401392fb39bbba8b4dbd" [label="Gateway LB" height=1.9 image="/Users/owenchung/.cache/uv/archive-v0/IQatjVLRJL6-IHoFzikoC/lib/python3.12/site-packages/resources/aws/network/elastic-load-balancing.png" shape=none]
+			a35bab5114f049cc8d4f0a1729a10382 [label="Network Firewall" height=1.9 image="/Users/owenchung/.cache/uv/archive-v0/IQatjVLRJL6-IHoFzikoC/lib/python3.12/site-packages/resources/aws/network/network-firewall.png" shape=none]
+		}
+		subgraph "cluster_Production VPCs" {
+			graph [bgcolor="#EBF3E7" fontname="Sans-Serif" fontsize=12 label="Production VPCs" labeljust=l pencolor="#AEB6BE" rankdir=LR shape=box style=rounded]
+			"64a926fd4cc648239247acd700ad2c89" [label="App VPC" height=1.9 image="/Users/owenchung/.cache/uv/archive-v0/IQatjVLRJL6-IHoFzikoC/lib/python3.12/site-packages/resources/aws/network/vpc.png" shape=none]
+			subgraph "cluster_Sydney Workloads" {
+				graph [bgcolor="#ECE8F6" fontname="Sans-Serif" fontsize=12 label="Sydney Workloads" labeljust=l pencolor="#AEB6BE" rankdir=LR shape=box style=rounded]
+				"42bf520704c642d4bb1d5eea9c51583f" [label=ALB height=1.9 image="/Users/owenchung/.cache/uv/archive-v0/IQatjVLRJL6-IHoFzikoC/lib/python3.12/site-packages/resources/aws/network/elb-application-load-balancer.png" shape=none]
+				d12d4a11705449b2abf7ddcec7ccc838 [label="App 1" height=1.9 image="/Users/owenchung/.cache/uv/archive-v0/IQatjVLRJL6-IHoFzikoC/lib/python3.12/site-packages/resources/aws/compute/elastic-container-service.png" shape=none]
+				"0bfa64c272294b7099b9115ae6637f74" [label="App 2" height=1.9 image="/Users/owenchung/.cache/uv/archive-v0/IQatjVLRJL6-IHoFzikoC/lib/python3.12/site-packages/resources/aws/compute/elastic-container-service.png" shape=none]
+				"3d4f57c29cd3413e83086640a6db33a8" [label="App 3" height=1.9 image="/Users/owenchung/.cache/uv/archive-v0/IQatjVLRJL6-IHoFzikoC/lib/python3.12/site-packages/resources/aws/compute/elastic-container-service.png" shape=none]
+				"927bafe2b2544485889ee4c8926a8841" [label="RDS Aurora" height=1.9 image="/Users/owenchung/.cache/uv/archive-v0/IQatjVLRJL6-IHoFzikoC/lib/python3.12/site-packages/resources/aws/database/aurora.png" shape=none]
+			}
+		}
+		subgraph "cluster_Egress VPC" {
+			graph [bgcolor="#EBF3E7" fontname="Sans-Serif" fontsize=12 label="Egress VPC" labeljust=l pencolor="#AEB6BE" rankdir=LR shape=box style=rounded]
+			"88d074a24a7a40888a38d27bca05190e" [label="NAT Gateway" height=1.9 image="/Users/owenchung/.cache/uv/archive-v0/IQatjVLRJL6-IHoFzikoC/lib/python3.12/site-packages/resources/aws/network/nat-gateway.png" shape=none]
+			"67800b1d818b480a9e4bb8ec55e77e5f" [label=IGW height=1.9 image="/Users/owenchung/.cache/uv/archive-v0/IQatjVLRJL6-IHoFzikoC/lib/python3.12/site-packages/resources/aws/network/internet-gateway.png" shape=none]
+		}
+	}
+	subgraph "cluster_Security & Monitoring" {
+		graph [bgcolor="#E5F5FD" fontname="Sans-Serif" fontsize=12 label="Security & Monitoring" labeljust=l pencolor="#AEB6BE" rankdir=LR shape=box style=rounded]
+		f977b3c39f87444987a1646f66d2a537 [label=GuardDuty height=1.9 image="/Users/owenchung/.cache/uv/archive-v0/IQatjVLRJL6-IHoFzikoC/lib/python3.12/site-packages/resources/aws/security/guardduty.png" shape=none]
+		"76a6acf8f50840c4a95a13aaa124cfd3" [label="Security Hub" height=1.9 image="/Users/owenchung/.cache/uv/archive-v0/IQatjVLRJL6-IHoFzikoC/lib/python3.12/site-packages/resources/aws/security/security-hub.png" shape=none]
+		"5179851d15254665a9d7a610e0024f01" [label=CloudTrail height=1.9 image="/Users/owenchung/.cache/uv/archive-v0/IQatjVLRJL6-IHoFzikoC/lib/python3.12/site-packages/resources/aws/management/cloudtrail.png" shape=none]
+		"6b3f8a63ff9849e781d70ae55c76f9f6" [label=Config height=1.9 image="/Users/owenchung/.cache/uv/archive-v0/IQatjVLRJL6-IHoFzikoC/lib/python3.12/site-packages/resources/aws/management/config.png" shape=none]
+	}
+	subgraph "cluster_Cost Optimization" {
+		graph [bgcolor="#E5F5FD" fontname="Sans-Serif" fontsize=12 label="Cost Optimization" labeljust=l pencolor="#AEB6BE" rankdir=LR shape=box style=rounded]
+		"8e0e30fe18f2464c9a14d017d49fefda" [label=Budgets height=1.9 image="/Users/owenchung/.cache/uv/archive-v0/IQatjVLRJL6-IHoFzikoC/lib/python3.12/site-packages/resources/aws/cost/budgets.png" shape=none]
+		c6ed979bec7246c9969e8911796e958e [label="Cost Explorer" height=1.9 image="/Users/owenchung/.cache/uv/archive-v0/IQatjVLRJL6-IHoFzikoC/lib/python3.12/site-packages/resources/aws/cost/cost-explorer.png" shape=none]
+	}
+	"63443f1bb1f4454cabd318b5d8f5c632" -> a470697ff82b4fd7bebc2f596cadb295 [dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	e1e77014b54842408a3067957f7c0f01 -> a470697ff82b4fd7bebc2f596cadb295 [dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	a470697ff82b4fd7bebc2f596cadb295 -> f39f81dc7b4340c0aa9cfe4f33abcfdd [dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	f39f81dc7b4340c0aa9cfe4f33abcfdd -> "24f291d8b9434a4a8f5ba2754322b06f" [dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	"24f291d8b9434a4a8f5ba2754322b06f" -> d1dcb4ab606b4c2bb8b26e43d8f988cf [dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	d1dcb4ab606b4c2bb8b26e43d8f988cf -> "54ddcf9d714c4d0aadba20286924a828" [dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	d1dcb4ab606b4c2bb8b26e43d8f988cf -> "38594573dfbc401392fb39bbba8b4dbd" [dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	"54ddcf9d714c4d0aadba20286924a828" -> c643d2c6c1be46f09ab358f1a4ff025e [dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	c643d2c6c1be46f09ab358f1a4ff025e -> "29e5231f1cce4c008d5ee04be56859dd" [dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	"29e5231f1cce4c008d5ee04be56859dd" -> a29d8046ee2d42988da81746c214ef00 [dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	a29d8046ee2d42988da81746c214ef00 -> "8f27eed08f07440ca3bb912cb44f7b91" [dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	a29d8046ee2d42988da81746c214ef00 -> "5b44b5414aa34d8b9c0547de95a7793e" [dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	a29d8046ee2d42988da81746c214ef00 -> cc81b2fd80ec4d8eafdf74bcb6d65743 [dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	"8f27eed08f07440ca3bb912cb44f7b91" -> a8af1632d99d4cbf9182b25da99f8810 [dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	"5b44b5414aa34d8b9c0547de95a7793e" -> a8af1632d99d4cbf9182b25da99f8810 [dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	cc81b2fd80ec4d8eafdf74bcb6d65743 -> a8af1632d99d4cbf9182b25da99f8810 [dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	"38594573dfbc401392fb39bbba8b4dbd" -> a35bab5114f049cc8d4f0a1729a10382 [dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	a35bab5114f049cc8d4f0a1729a10382 -> "64a926fd4cc648239247acd700ad2c89" [dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	"64a926fd4cc648239247acd700ad2c89" -> "42bf520704c642d4bb1d5eea9c51583f" [dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	"42bf520704c642d4bb1d5eea9c51583f" -> d12d4a11705449b2abf7ddcec7ccc838 [dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	"42bf520704c642d4bb1d5eea9c51583f" -> "0bfa64c272294b7099b9115ae6637f74" [dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	"42bf520704c642d4bb1d5eea9c51583f" -> "3d4f57c29cd3413e83086640a6db33a8" [dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	d12d4a11705449b2abf7ddcec7ccc838 -> "927bafe2b2544485889ee4c8926a8841" [dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	"0bfa64c272294b7099b9115ae6637f74" -> "927bafe2b2544485889ee4c8926a8841" [dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	"3d4f57c29cd3413e83086640a6db33a8" -> "927bafe2b2544485889ee4c8926a8841" [dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	"8f27eed08f07440ca3bb912cb44f7b91" -> "4a8076831f6d4e96b5729c86bf2b4fb0" [dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	"5b44b5414aa34d8b9c0547de95a7793e" -> "4a8076831f6d4e96b5729c86bf2b4fb0" [dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	cc81b2fd80ec4d8eafdf74bcb6d65743 -> "4a8076831f6d4e96b5729c86bf2b4fb0" [dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	"4a8076831f6d4e96b5729c86bf2b4fb0" -> "0cae8a1eb3b345f7b1da30012826270f" [dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	d12d4a11705449b2abf7ddcec7ccc838 -> "88d074a24a7a40888a38d27bca05190e" [dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	"0bfa64c272294b7099b9115ae6637f74" -> "88d074a24a7a40888a38d27bca05190e" [dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	"3d4f57c29cd3413e83086640a6db33a8" -> "88d074a24a7a40888a38d27bca05190e" [dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	"88d074a24a7a40888a38d27bca05190e" -> "67800b1d818b480a9e4bb8ec55e77e5f" [dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	d1dcb4ab606b4c2bb8b26e43d8f988cf -> f977b3c39f87444987a1646f66d2a537 [dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	d1dcb4ab606b4c2bb8b26e43d8f988cf -> "76a6acf8f50840c4a95a13aaa124cfd3" [dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	d1dcb4ab606b4c2bb8b26e43d8f988cf -> "5179851d15254665a9d7a610e0024f01" [dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	d1dcb4ab606b4c2bb8b26e43d8f988cf -> "6b3f8a63ff9849e781d70ae55c76f9f6" [dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+}

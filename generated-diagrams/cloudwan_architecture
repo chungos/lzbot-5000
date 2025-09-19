@@ -1,0 +1,47 @@
+digraph "AWS Cloud WAN Multi-Region Architecture" {
+	graph [fontcolor="#2D3436" fontname="Sans-Serif" fontsize=15 label="AWS Cloud WAN Multi-Region Architecture" nodesep=0.60 pad=2.0 rankdir=LR ranksep=0.75 splines=ortho]
+	node [fixedsize=true fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13 height=1.4 imagescale=true labelloc=b shape=box style=rounded width=1.4]
+	edge [color="#7B8894"]
+	c4f7f283938248c9a27042fd9f13a1d2 [label=Users height=1.9 image="/Users/owenchung/.cache/uv/archive-v0/IQatjVLRJL6-IHoFzikoC/lib/python3.12/site-packages/resources/aws/general/users.png" shape=none]
+	subgraph "cluster_Centralized Ingress" {
+		graph [bgcolor="#E5F5FD" fontname="Sans-Serif" fontsize=12 label="Centralized Ingress" labeljust=l pencolor="#AEB6BE" rankdir=LR shape=box style=rounded]
+		"32e60bcd587f43cca3e8e10fd81420dd" [label=Route53 height=1.9 image="/Users/owenchung/.cache/uv/archive-v0/IQatjVLRJL6-IHoFzikoC/lib/python3.12/site-packages/resources/aws/network/route-53.png" shape=none]
+		ea0ad13ac70647c699e61579f4f37b4d [label=CloudFront height=1.9 image="/Users/owenchung/.cache/uv/archive-v0/IQatjVLRJL6-IHoFzikoC/lib/python3.12/site-packages/resources/aws/network/cloudfront.png" shape=none]
+		"34e53b765d494bc9ae2d896917e7b99e" [label=WAF height=1.9 image="/Users/owenchung/.cache/uv/archive-v0/IQatjVLRJL6-IHoFzikoC/lib/python3.12/site-packages/resources/aws/security/waf.png" shape=none]
+	}
+	subgraph "cluster_AWS Cloud WAN" {
+		graph [bgcolor="#E5F5FD" fontname="Sans-Serif" fontsize=12 label="AWS Cloud WAN" labeljust=l pencolor="#AEB6BE" rankdir=LR shape=box style=rounded]
+		"7000de96ec6544babf0dbeb29aef188f" [label="Cloud WAN Core" height=1.9 image="/Users/owenchung/.cache/uv/archive-v0/IQatjVLRJL6-IHoFzikoC/lib/python3.12/site-packages/resources/aws/network/transit-gateway.png" shape=none]
+	}
+	subgraph "cluster_Melbourne Region" {
+		graph [bgcolor="#E5F5FD" fontname="Sans-Serif" fontsize=12 label="Melbourne Region" labeljust=l pencolor="#AEB6BE" rankdir=LR shape=box style=rounded]
+		"9b316cd4d5b7491da207b822b1ff6356" [label=Inspection height=1.9 image="/Users/owenchung/.cache/uv/archive-v0/IQatjVLRJL6-IHoFzikoC/lib/python3.12/site-packages/resources/aws/network/network-firewall.png" shape=none]
+		"963f5a3dcd644bd395c650eec93eca58" [label="App VPC" height=1.9 image="/Users/owenchung/.cache/uv/archive-v0/IQatjVLRJL6-IHoFzikoC/lib/python3.12/site-packages/resources/aws/network/vpc.png" shape=none]
+		f081c285165143a9b615cbf1c6e602d9 [label=Apps height=1.9 image="/Users/owenchung/.cache/uv/archive-v0/IQatjVLRJL6-IHoFzikoC/lib/python3.12/site-packages/resources/aws/compute/elastic-container-service.png" shape=none]
+		fd502f98cc2a4252bf6ad76f863771e9 [label=NAT height=1.9 image="/Users/owenchung/.cache/uv/archive-v0/IQatjVLRJL6-IHoFzikoC/lib/python3.12/site-packages/resources/aws/network/nat-gateway.png" shape=none]
+	}
+	subgraph "cluster_Sydney Region" {
+		graph [bgcolor="#E5F5FD" fontname="Sans-Serif" fontsize=12 label="Sydney Region" labeljust=l pencolor="#AEB6BE" rankdir=LR shape=box style=rounded]
+		d902ce7befa64fcaa86dfc668c49b5c1 [label=Inspection height=1.9 image="/Users/owenchung/.cache/uv/archive-v0/IQatjVLRJL6-IHoFzikoC/lib/python3.12/site-packages/resources/aws/network/network-firewall.png" shape=none]
+		"6be1aa7dda4c4141b7a38d20bb3bbaba" [label="App VPC" height=1.9 image="/Users/owenchung/.cache/uv/archive-v0/IQatjVLRJL6-IHoFzikoC/lib/python3.12/site-packages/resources/aws/network/vpc.png" shape=none]
+		dd33f0bb288e4d22808a0ef6cd15ba35 [label=Apps height=1.9 image="/Users/owenchung/.cache/uv/archive-v0/IQatjVLRJL6-IHoFzikoC/lib/python3.12/site-packages/resources/aws/compute/elastic-container-service.png" shape=none]
+		"324604c0eb9f4ed08af6007574f16f76" [label=NAT height=1.9 image="/Users/owenchung/.cache/uv/archive-v0/IQatjVLRJL6-IHoFzikoC/lib/python3.12/site-packages/resources/aws/network/nat-gateway.png" shape=none]
+	}
+	subgraph cluster_Security {
+		graph [bgcolor="#E5F5FD" fontname="Sans-Serif" fontsize=12 label=Security labeljust=l pencolor="#AEB6BE" rankdir=LR shape=box style=rounded]
+		"790851cdeb8a4e26b8c06fa53a54ab90" [label="Security Hub" height=1.9 image="/Users/owenchung/.cache/uv/archive-v0/IQatjVLRJL6-IHoFzikoC/lib/python3.12/site-packages/resources/aws/security/security-hub.png" shape=none]
+	}
+	c4f7f283938248c9a27042fd9f13a1d2 -> "32e60bcd587f43cca3e8e10fd81420dd" [dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	"32e60bcd587f43cca3e8e10fd81420dd" -> ea0ad13ac70647c699e61579f4f37b4d [dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	ea0ad13ac70647c699e61579f4f37b4d -> "34e53b765d494bc9ae2d896917e7b99e" [dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	"34e53b765d494bc9ae2d896917e7b99e" -> "7000de96ec6544babf0dbeb29aef188f" [dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	"7000de96ec6544babf0dbeb29aef188f" -> "9b316cd4d5b7491da207b822b1ff6356" [dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	"9b316cd4d5b7491da207b822b1ff6356" -> "963f5a3dcd644bd395c650eec93eca58" [dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	"963f5a3dcd644bd395c650eec93eca58" -> f081c285165143a9b615cbf1c6e602d9 [dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	"7000de96ec6544babf0dbeb29aef188f" -> d902ce7befa64fcaa86dfc668c49b5c1 [dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	d902ce7befa64fcaa86dfc668c49b5c1 -> "6be1aa7dda4c4141b7a38d20bb3bbaba" [dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	"6be1aa7dda4c4141b7a38d20bb3bbaba" -> dd33f0bb288e4d22808a0ef6cd15ba35 [dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	f081c285165143a9b615cbf1c6e602d9 -> fd502f98cc2a4252bf6ad76f863771e9 [dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	dd33f0bb288e4d22808a0ef6cd15ba35 -> "324604c0eb9f4ed08af6007574f16f76" [dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	"7000de96ec6544babf0dbeb29aef188f" -> "790851cdeb8a4e26b8c06fa53a54ab90" [dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+}
