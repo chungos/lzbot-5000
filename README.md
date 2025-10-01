@@ -1,5 +1,7 @@
 # LZBot-5000: AWS Landing Zone Designer
 
+![lzbot](./img/lzbot-at-work.png)
+
 An intelligent AWS Landing Zone design tool that leverages AWS Bedrock, Strands framework, and AWS Diagram MCP Server to automatically generate comprehensive, Well-Architected Framework-compliant landing zone architectures with professional diagrams and implementation guides.
 
 ## 🚀 Overview
