@@ -1,15 +1,124 @@
 [project]
 name = "lzbot-5000"
-version = "0.1.0"
-description = "Add your description here"
+version = "1.0.0"
+description = "AWS Landing Zone Designer with JIRA/Confluence Integration - A professional tool for designing, documenting, and implementing AWS Landing Zones"
 readme = "README.md"
-requires-python = ">=3.12"
-dependencies = [
-    "sarif-om",
-    "mcp",
-    "ipython",
-    "boto3",
-    "botocore",
-    "strands-agents",
-    "strands-agents-tools"
+requires-python = ">=3.11"
+authors = [
+    {name = "LZBot Development Team"}
 ]
+keywords = ["aws", "landing-zone", "architecture", "jira", "confluence", "mcp", "bedrock"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Intended Audience :: System Administrators",
+    "Topic :: System :: Systems Administration",
+    "Topic :: Software Development :: Documentation",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+]
+dependencies = [
+    # Core MCP and Strands framework dependencies
+    "mcp>=1.0.0",
+    "strands-agents>=1.10.0",
+    "strands-agents-tools>=0.2.9",
+    
+    # Data validation and settings management
+    "pydantic>=2.11.0",
+    "pydantic-settings>=2.11.0",
+    
+    # Environment and configuration management
+    "python-dotenv>=1.1.0",
+    
+    # AWS services and cloud integration
+    "boto3>=1.40.0",
+    
+    # AWS diagram generation dependency (for uvx --with usage)
+    "jschema-to-python>=1.2.3",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-asyncio>=0.21.0",
+    "pytest-mock>=3.10.0",
+    "black>=23.0.0",
+    "flake8>=6.0.0",
+    "mypy>=1.0.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/chungos/lzbot-5000"
+Repository = "https://github.com/chungos/lzbot-5000.git"
+Issues = "https://github.com/chungos/lzbot-5000/issues"
+
+[project.scripts]
+lzbot = "main:main"
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["lzbot*"]
+
+[tool.setuptools.package-data]
+lzbot = ["*.py", "*.md"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = [
+    "-v",
+    "--tb=short",
+    "--strict-markers",
+]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "integration: marks tests as integration tests",
+    "unit: marks tests as unit tests",
+]
+
+[tool.black]
+line-length = 88
+target-version = ['py311']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | build
+  | dist
+)/
+'''
+
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+warn_unreachable = true
+strict_equality = true
+
+[[tool.mypy.overrides]]
+module = "tests.*"
+disallow_untyped_defs = false
