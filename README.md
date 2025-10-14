@@ -2,7 +2,7 @@
 
 An AWS Landing Zone design tool that leverages AWS Bedrock, Strands framework, and MCP Server for AWS diagrams, AWS pricing & AWS knowledge to  generate comprehensive, well-architected Framework-compliant landing zone architectures with professional diagrams and implementation guides.
 
-## 🚀 Overview
+## Overview
 
 LZBot-5000 is an automated AWS Landing Zone designer that combines the power of:
 
@@ -20,7 +20,7 @@ The tool outputs :
 - Implementation backlogs
 - Cost optimization strategies
 
-## 🏗️ Architecture Overview
+## Architecture Overview
 
 ```mermaid
 graph TB
@@ -54,7 +54,7 @@ graph TB
     end
     
     subgraph "Monitoring & Logging"
-        LOGS[Comprehensive Logging<br/>Operations & Errors]
+        LOGS[Logging<br/>Operations & Errors]
         METRICS[Performance Metrics<br/>Health Monitoring]
     end
     
@@ -100,7 +100,7 @@ graph TB
     class LOGS,METRICS monitoring
 ```
 
-## 🏗️ Key Components
+## Key Components
 
 ### Core Application Layer
 
@@ -145,7 +145,7 @@ graph TB
 
 ```mermaid
 sequenceDiagram
-    participant User
+    participant User prompt(run_design_query)
     participant Main as main.py
     participant MCM as MCP Client Manager
     participant Agent as Strands Agent
@@ -175,16 +175,8 @@ sequenceDiagram
     
     Main-->>User: Architecture design complete
     
-    Note over MCM,MCP: Graceful degradation if services unavailable
-    Note over Processor,Generator: Enhanced processing with cost analysis
 ```
 
-### System Behavior Patterns
-
-- **Graceful Degradation**: System continues operating even when MCP servers are unavailable
-- **Enhanced Processing**: Extracts structured information from agent responses for better documentation
-- **Performance Monitoring**: Tracks operation metrics and connection health across all components
-- **Error Recovery**: Implements retry logic and fallback strategies for robust operation
 
 ## 📋 Prerequisites
 
@@ -223,7 +215,7 @@ The application integrates with three AWS MCP servers:
 - **Knowledge Server**: Accesses real-time AWS documentation, best practices, and service specifications
 - **Pricing Server**: Delivers current pricing data, cost optimization suggestions, and financial modeling
 
-## 🛠️ Installation
+## Installation
 
 1. **Clone the repository**
 
@@ -251,7 +243,7 @@ The application integrates with three AWS MCP servers:
    python main.py
    ```
 
-## 🎯 Usage Guide
+## Usage Guide
 
 ### Basic Usage
 
@@ -275,34 +267,15 @@ The default query designs a CloudWAN network across Melbourne and Sydney regions
 Modify the `query` variable in `main.py` to design different architectures:
 
 ```python
-query = (
-    "Design a multi-account AWS landing zone for a financial services company "
-    "requiring APRA compliance, with separate accounts for dev, test, and prod, "
-    "centralised logging, and network segmentation."
-)
+    query = (
+        "Design a real-world AWS cloudWAN network across Melbourne and Sydney "
+        "regions that must have centralised packet inspection, decentralised egress, centralied ingress"
+        "that will host web applications which serves thousands of users with low latency, strong security controls, and predictable costs."
+        "Networks are to be split via CloudWAN into network segments for secure, standard workloads"
+    )
 ```
 
-### Query Examples
-
-**Multi-Region Web Application**
-
-```python
-query = "Design a global web application architecture across 3 regions with auto-scaling, CDN, and disaster recovery"
-```
-
-**Compliance-Heavy Environment**
-
-```python
-query = "Create a HIPAA-compliant landing zone with data encryption, audit logging, and network isolation"
-```
-
-**Cost-Optimized Startup**
-
-```python
-query = "Design a cost-effective landing zone for a startup with growth potential and minimal operational overhead"
-```
-
-## 📊 Understanding Outputs
+## Understanding Outputs
 
 ### Generated Files Structure
 
@@ -319,7 +292,6 @@ outputs/
 3. **Security Controls** - Comprehensive security implementation
 4. **Implementation Backlog** - Sprint-based delivery plan
 5. **Cost Optimization** - Strategies for cost management
-6. **Next Steps** - Actionable implementation guidance
 
 ### Implementation Backlog Format
 
@@ -329,7 +301,7 @@ outputs/
 - **Dependencies** clearly identified
 - **Well-Architected Framework** alignment
 
-## 📈 Example Output
+## Example Output
 
 ### Sample Architecture Diagram
 
@@ -372,37 +344,6 @@ outputs/
 ...
 ```
 
-## 🔄 Customization
-
-### Modifying the System Prompt
-
-Edit the `SYSTEM_PROMPT` variable in `main.py` to:
-
-- Change default region preferences
-- Add specific compliance requirements
-- Modify output format preferences
-- Include organization-specific standards
-
-### MCP Server Customization
-
-**AWS Diagram MCP Server** supports various customization options:
-- Output formats (PNG, SVG, PDF)
-- Official AWS service icons and styling
-- Automatic component positioning and layout
-- Custom labels and annotations
-- Multi-region and multi-account visualizations
-
-**AWS Knowledge MCP Server** provides:
-- Current AWS service documentation and API references
-- Well-Architected Framework best practices
-- Regional service availability and limitations
-- Compliance and security guidelines
-
-**AWS Pricing MCP Server** offers:
-- Real-time pricing data across all AWS regions
-- Cost optimization recommendations
-- Reserved Instance and Savings Plan analysis
-- Data transfer and operational cost calculations
 
 ### Output Directory Structure
 
@@ -424,31 +365,6 @@ lzbot-5000/
 ├── outputs/              # Generated designs and diagrams
 ├── examples/             # Example outputs
 └── src/                  # Source code (if expanded)
-```
-
-### Key Functions
-
-- `extract_diagram_path()` - Parses diagram paths from agent output
-- `handle_diagram_file()` - Manages diagram file operations
-- `create_markdown_content()` - Generates formatted documentation
-
-### Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests if applicable
-5. Submit a pull request
-
-### Local Development
-
-```bash
-# Install development dependencies
-pip install -r requirements-dev.txt
-
-# Run tests
-python -m pytest
-
 ```
 
 ## 📚 Additional Resources
