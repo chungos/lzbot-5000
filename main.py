@@ -497,7 +497,7 @@ def run_design_query():
         "Design a real-world AWS cloudWAN network across Melbourne and Sydney "
         "regions that must have centralised packet inspection, decentralised egress, centralied ingress"
         "that will host web applications which serves thousands of users with low latency, strong security controls, and predictable costs."
-        "Networks are to be split via CloudWAN into network segments for secure, standard and web"
+        "Networks are to be split via CloudWAN into network segments for secure, standard workloads"
     )
 
     print(f"Sending query to agent: {query}\n")
