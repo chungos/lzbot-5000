@@ -31,7 +31,8 @@ class TestRunner:
                 'test_confluence_edge_cases.py',
                 'test_confluence_attachment.py'
             ],
-            'config': ['test_config.py']
+            'config': ['test_config.py'],
+            'conversation': ['test_conversation.py']
         }
         self.results = {}
     

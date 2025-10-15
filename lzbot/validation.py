@@ -74,7 +74,7 @@ class UserQuery(BaseModel):
     @classmethod
     def validate_requirements(cls, v: List[str]) -> List[str]:
         return [req.strip() for req in v if req.strip()]
-    
+
     @field_validator('compliance_requirements')
     @classmethod
     def validate_compliance(cls, v: List[str]) -> List[str]:
@@ -93,6 +93,25 @@ class UserQuery(BaseModel):
                 validated.append(req.strip())
         
         return validated
+
+
+class ConversationResponse(BaseModel):
+    """Model for validating conversational responses - more flexible than UserQuery."""
+    model_config = ConfigDict(str_strip_whitespace=True)
+    
+    response: str = Field(
+        ...,
+        min_length=1,
+        max_length=2000,
+        description="User response in conversation"
+    )
+    
+    @field_validator('response')
+    @classmethod
+    def validate_response(cls, v: str) -> str:
+        if not v.strip():
+            raise ValueError('Response cannot be empty')
+        return v
 
 
 class JiraIssueRequest(BaseModel):

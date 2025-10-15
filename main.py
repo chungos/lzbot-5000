@@ -100,7 +100,7 @@ class LZBotApplication:
             
         except ConfigError as e:
             print(f"❌ Configuration error: {e}")
-            print("\n💡 Run 'python3 setup_env.py' to configure your environment")
+            print("\n💡 Please check your .env file. Copy .env.example to .env and configure your credentials")
             return False
         except Exception as e:
             logger.error(f"Initialization error: {e}")
@@ -123,6 +123,10 @@ class LZBotApplication:
             logger.info("Getting user query...")
             query = self.input_handler.get_query_input()
             self.input_handler.print_query_summary(query)
+            
+            # Show conversation guidance if interactive mode or complex query
+            if (hasattr(self.input_handler.args, 'interactive') and self.input_handler.args.interactive) or len(query.split()) > 20:
+                self.input_handler.print_conversation_guidance()
             
             # Process the architecture request
             logger.info("Processing architecture request...")
@@ -175,21 +179,96 @@ class LZBotApplication:
             with self.client_manager:
                 tools = self.client_manager.get_all_tools()
                 
-                # Process query with AI agent
-                print("🤖 Sending query to AI agent...")
+                # Start conversation with AI agent
+                print("🤖 Starting conversation with AI agent...")
+                print("💡 The agent may ask clarifying questions to better understand your requirements")
                 print("⏳ This may take a few minutes for complex architectures...")
                 
-                agent_result = self.agent.process_query(query, tools)
+                response, needs_more_input, analysis = self.agent.start_conversation(query, tools)
+                print(f"\n🤖 Agent: {response}")
+                
+                # Handle conversational flow
+                max_conversation_rounds = 10  # Prevent infinite loops
+                conversation_round = 0
+                
+                while needs_more_input and conversation_round < max_conversation_rounds:
+                    try:
+                        conversation_round += 1
+                        print("\n" + "="*60)
+                        
+                        # Simple prompt based on whether multiple questions are detected
+                        if analysis.get("is_multi_question_scenario", False):
+                            print("💬 The agent has asked multiple questions.")
+                            print("Please provide a comprehensive response addressing all the questions above.")
+                        else:
+                            print("💬 The agent needs more information to proceed.")
+                            print("Please provide additional details, or type 'proceed' to continue with current information.")
+                        
+                        user_input = input("\n👤 Your response: ").strip()
+                        
+                        # Handle empty input
+                        if not user_input:
+                            print("⚠️  Please provide some input or type 'proceed' to continue.")
+                            continue
+                        
+                        # Handle proceed commands
+                        if user_input.lower() in ['proceed', 'continue', 'go ahead', 'skip']:
+                            print("✅ Proceeding with current information...")
+                            break
+                        
+                        # Handle quit commands
+                        if user_input.lower() in ['quit', 'exit', 'stop', 'cancel']:
+                            print("❌ Conversation cancelled by user")
+                            return False
+                        
+                        print("🤖 Processing your response...")
+                        response, needs_more_input, analysis = self.agent.continue_conversation(user_input, tools)
+                        print(f"\n🤖 Agent: {response}")
+                        
+                    except KeyboardInterrupt:
+                        print("\n\n❌ Conversation cancelled by user")
+                        return False
+                    except EOFError:
+                        print("\n\n⚠️  Input ended, proceeding with current information...")
+                        break
+                    except Exception as e:
+                        logger.error(f"Error in conversation: {e}")
+                        print(f"⚠️  Error processing response: {e}")
+                        print("Please try again or type 'proceed' to continue.")
+                        continue
+                
+                if conversation_round >= max_conversation_rounds:
+                    print("\n⚠️  Maximum conversation rounds reached. Proceeding with current information...")
+                
+                # Check if we have enough information to proceed
+                if not self.agent.is_conversation_ready_for_implementation():
+                    print("\n⚠️  Insufficient information gathered. Design may be incomplete.")
+                    proceed = input("Do you want to proceed anyway? (y/N): ").strip().lower()
+                    if proceed not in ['y', 'yes']:
+                        print("❌ Architecture design cancelled")
+                        return False
+                
+                # Get final comprehensive response for implementation
+                print("\n🏗️  Generating comprehensive architecture design...")
+                final_query = "Based on our conversation, please create the complete AWS Landing Zone architecture design with diagrams, detailed documentation, and implementation backlog."
+                final_result = self.agent.process_query(final_query, tools)
                 
                 # Save results to files
                 logger.info("Saving generated files...")
                 print("💾 Saving generated documentation and diagrams...")
                 
-                file_results = self.file_handler.process_agent_result(query, agent_result)
+                file_results = self.file_handler.process_agent_result(query, final_result)
                 
                 # Display summary
                 summary = self.file_handler.get_output_summary(file_results)
                 print(summary)
+                
+                # Show conversation summary
+                conv_summary = self.agent.get_conversation_summary()
+                print(f"\n📊 Conversation Summary:")
+                print(f"   • Messages exchanged: {conv_summary['message_count']}")
+                print(f"   • Requirements gathered: {'✅' if conv_summary['has_gathered_requirements'] else '⚠️ Partial'}")
+                print(f"   • Design complete: {'✅' if conv_summary['is_complete'] else '⚠️ May need refinement'}")
                 
                 return True
                 

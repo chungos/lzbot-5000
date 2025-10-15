@@ -13,10 +13,14 @@ from .clients import ClientManager
 from .agent import LZBotAgent
 from .input_handler import InputHandler
 from .file_handler import FileHandler
+from .conversation import ConversationManager, ConversationState, ConversationMessage
 
 __all__ = [
     "ClientManager",
     "LZBotAgent", 
     "InputHandler",
-    "FileHandler"
+    "FileHandler",
+    "ConversationManager",
+    "ConversationState", 
+    "ConversationMessage"
 ]

@@ -14,6 +14,10 @@ LZBot-5000 is a production-ready AWS Landing Zone designer that combines:
 - **Structured Logging** with comprehensive error handling and monitoring
 - **Comprehensive Testing Suite** with integration validation
 - **Production-Ready Architecture** with proper dependency management and optimization
+- **Automatic Question Detection**: The AI agent recognizes when it needs more information
+- **Interactive Dialogue**: Engages in back-and-forth conversation to understand your needs
+- **Smart Continuation**: Knows when to stop asking questions and start designing
+- **User Control**: You can type 'proceed' to continue with current information at any time
 
 The tool takes natural language queries about your AWS requirements and produces:
 
@@ -24,16 +28,6 @@ The tool takes natural language queries about your AWS requirements and produces
 - Confluence pages with comprehensive architecture details and embedded diagrams
 - Cost optimization strategies and recommendations
 
-## ✅ Current Status (October 2025)
-
-- **🔧 MCP Integration**: Fully operational with new modular server architecture
-- **🎯 JIRA/Confluence**: Production-ready integration with enhanced error handling
-- **📊 AWS Diagrams**: Optimized diagram generation with validation
-- **🚀 Testing**: Comprehensive test suite with validation framework
-- **📦 Dependencies**: Modernized with Pydantic validation and structured logging
-- **⚡ Performance**: Token-optimized (max_tokens=4000) with comprehensive monitoring
-- **🔒 Security**: Production-grade configuration management and error handling
-- **📚 Documentation**: Complete deployment and operations guides
 
 ## 🏗️ Architecture Overview
 
@@ -79,50 +73,6 @@ lzbot-5000/
 ├── pyproject.toml             # Modern Python packaging
 ├── .env.example              # Environment template
 └── README.md                 # This file
-```
-
-## 🚀 Overview
-
-LZBot-5000 is a production-ready AWS Landing Zone designer that combines the power of:
-
-- **AWS Bedrock** (Claude Sonnet) for intelligent architecture design
-- **Strands Framework** for AI agent orchestration  
-- **AWS Diagram MCP Server** for professional architecture diagram generation
-- **JIRA/Confluence MCP Server** for automatic backlog and documentation publishing
-- **Comprehensive Testing Suite** with 100% test coverage for real and mock scenarios
-- **Modular Architecture** with proper dependency management and token optimization
-
-The tool takes natural language queries about your AWS requirements and produces:
-
-- Professional architecture diagrams (PNG format) saved to `./outputs` directory
-- Detailed implementation guides and documentation
-- Well-Architected Framework compliance documentation
-- Automated JIRA epics and stories with proper categorization
-- Confluence pages with comprehensive architecture details
-- Cost optimization strategies and recommendations
-
-## ✅ Current Status (October 2025)
-
-- **🔧 MCP Integration**: Fully operational with proper API compatibility
-- **🎯 JIRA/Confluence**: Real integration tested (SCRUM-40, SCRUM-41 created)
-- **📊 AWS Diagrams**: Dependency issues resolved, diagram generation ready
-- **🚀 Testing**: 100% test success rate (comprehensive test suite)
-- **📦 Dependencies**: Optimized with `jschema-to-python` resolved via uvx
-- **⚡ Performance**: Token-optimized (max_tokens=4000) for consistent operation
-
-## 🏗️ Architecture & Components
-
-### Core Components
-
-#### LZBot Package Structure
-```
-lzbot/
-├── __init__.py           # Package initialization and exports
-├── agent.py             # LZBotAgent - AI agent with optimized prompts
-├── clients.py           # ClientManager - MCP client management
-├── file_handler.py      # FileHandler - file operations and cleanup
-└── input_handler.py     # InputHandler - command-line argument processing
-```
 
 #### AWS Bedrock Integration
 - **Model**: `anthropic.claude-3-5-sonnet-20241022-v2:0`
@@ -211,15 +161,17 @@ cp .env.example .env
 ### 4. Usage
 
 ```bash
-# Basic usage with query
+# Basic usage with query (includes conversational mode)
 python main.py -q "Design a multi-region AWS CloudWAN architecture for connecting Sydney and Melbourne offices"
+
+# Interactive conversational mode (recommended for complex requirements)
+python main.py --interactive
 
 # Check available options
 python main.py --help
 
 # Run in specific output directory
 python main.py -q "Your query here" --output-dir ./custom-outputs
-```
 
 ## 🧪 Testing
 
@@ -296,6 +248,12 @@ TEST_MODE=real    # Set to "mock" for safe testing
 - **Page IDs**: Found in Confluence page URLs
 
 ## 🎯 Features
+
+### Intelligent Conversational Design
+- **Requirements Gathering**: AI agent asks clarifying questions to understand your specific needs
+- **Interactive Dialogue**: Back-and-forth conversation for better architecture tailoring
+- **Smart Question Detection**: Automatically determines when more information is needed
+- **User Control**: Option to proceed with current information or provide more details
 
 ### Automatic JIRA Integration
 - **Epic Creation**: 6-month implementation timeline

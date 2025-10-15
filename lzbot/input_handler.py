@@ -35,9 +35,10 @@ class InputHandler:
             description="AWS Landing Zone Designer with JIRA/Confluence Integration",
             epilog="""
 Examples:
-  python3 main.py                                    # Interactive mode
+  python3 main.py                                    # Interactive mode with conversation
   python3 main.py -q "Design a multi-region setup"  # Direct query
   python3 main.py -f requirements.txt               # Read from file
+  python3 main.py --interactive                     # Force full conversational mode
             """,
             formatter_class=argparse.RawDescriptionHelpFormatter
         )
@@ -56,6 +57,12 @@ Examples:
             '--output-dir',
             default='./outputs',
             help='Directory to save generated diagrams and documentation (default: ./outputs)'
+        )
+        
+        parser.add_argument(
+            '--interactive',
+            action='store_true',
+            help='Enable full interactive mode with conversational requirement gathering'
         )
         
         parser.add_argument(
@@ -174,6 +181,28 @@ Examples:
             if isinstance(e, ValidationError):
                 raise
             raise ValidationError(f"Query validation error: {str(e)}")
+    
+    def print_conversation_guidance(self) -> None:
+        """Print guidance for users on how to engage in conversation with the agent."""
+        print("\n" + "="*70)
+        print("💡 CONVERSATIONAL MODE GUIDANCE")
+        print("="*70)
+        print("The AI agent will ask clarifying questions to better understand your needs.")
+        print("This helps create a more accurate and tailored AWS architecture design.")
+        print()
+        print("Tips for effective conversation:")
+        print("• Be specific about your business requirements and constraints")
+        print("• Mention any compliance requirements (HIPAA, PCI DSS, SOC 2, etc.)")
+        print("• Share information about your team size and technical expertise")
+        print("• Specify budget constraints or cost optimization priorities")
+        print("• Mention any existing AWS infrastructure or migration needs")
+        print()
+        print("You can:")
+        print("• Answer the agent's questions in detail")
+        print("• Ask for clarification if you don't understand a question")
+        print("• Type 'proceed' to continue with current information if you prefer")
+        print("• Use Ctrl+C to cancel the conversation at any time")
+        print("="*70)
     
     def get_validated_query_object(self, args: Optional[argparse.Namespace] = None, **kwargs) -> UserQuery:
         """
