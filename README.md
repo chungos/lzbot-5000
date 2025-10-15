@@ -1,53 +1,182 @@
 # LZBot-5000: AWS Landing Zone Designer
 
-An intelligent AWS Landing Zone design tool that leverages AWS Bedrock, Strands framework, and AWS Diagram MCP Server to automatically generate comprehensive, well-architected Framework-compliant landing zone architectures with professional diagrams and implementation guides.
+An AWS Landing Zone design tool that leverages AWS Bedrock, Strands framework, and MCP Server for AWS diagrams, AWS pricing & AWS knowledge to  generate comprehensive, well-architected Framework-compliant landing zone architectures with professional diagrams and implementation guides.
 
-## 🚀 Overview
+## Overview
 
 LZBot-5000 is an automated AWS Landing Zone designer that combines the power of:
 
 - **AWS Bedrock** (Claude Sonnet) for intelligent architecture design
 - **Strands Framework** for AI agent orchestration
-- **AWS Diagram MCP Server** for professional architecture diagram generation
+- **AWS Diagram MCP Server** for professional architecture diagram generation with AWS service icons
+- **AWS Knowledge MCP Server** for real-time access to AWS documentation and best practices
+- **AWS Pricing MCP Server** for accurate cost estimation and optimization recommendations
 - **Automated Documentation** generation with implementation backlogs
 
-The tool takes natural language queries about your AWS requirements and produces:
+The tool outputs :
 
-- Professional architecture diagrams
-- Detailed implementation guides
-- well-architected Framework compliance documentation
-- Sprint-based implementation backlogs
+- Architecture diagrams
+- Design documentation
+- Implementation backlogs
 - Cost optimization strategies
 
-## 🏗️ Key Components
+## Architecture Overview
 
-### AWS Bedrock Integration
+```mermaid
+graph TB
+    subgraph "User Interface"
+        UI[User Query Input]
+    end
+    
+    subgraph "Core Application"
+        MAIN[main.py<br/>Application Entry Point]
+        AGENT[Strands Agent<br/>AI Orchestration]
+        BEDROCK[AWS Bedrock<br/>Claude Sonnet 4]
+    end
+    
+    subgraph "MCP Client Management"
+        MCM[MCP Client Manager<br/>Connection Orchestration]
+        CONFIG[MCP Config Manager<br/>Configuration Loading]
+        ERROR[Error Handler<br/>Graceful Degradation]
+        MONITOR[MCP Monitor<br/>Performance Tracking]
+    end
+    
+    subgraph "MCP Servers"
+        DIAG[AWS Diagram Server<br/>Architecture Diagrams]
+        KNOW[AWS Knowledge Server<br/>Documentation Access]
+        PRICE[AWS Pricing Server<br/>Cost Estimation]
+    end
+    
+    subgraph "Output Processing"
+        PROCESSOR[Output Processor<br/>Result Parsing]
+        MARKDOWN[Enhanced Markdown Generator<br/>Documentation Creation]
+        FILES[Generated Files<br/>Diagrams & Documentation]
+    end
+    
+    subgraph "Monitoring & Logging"
+        LOGS[Logging<br/>Operations & Errors]
+        METRICS[Performance Metrics<br/>Health Monitoring]
+    end
+    
+    %% User flow
+    UI --> MAIN
+    MAIN --> AGENT
+    AGENT --> BEDROCK
+    
+    %% MCP Management
+    MAIN --> MCM
+    MCM --> CONFIG
+    MCM --> ERROR
+    MCM --> MONITOR
+    
+    %% MCP Server connections
+    MCM -.-> DIAG
+    MCM -.-> KNOW
+    MCM -.-> PRICE
+    
+    %% Agent tool integration
+    AGENT --> MCM
+    MCM --> AGENT
+    
+    %% Output processing flow
+    AGENT --> PROCESSOR
+    PROCESSOR --> MARKDOWN
+    MARKDOWN --> FILES
+    
+    %% Monitoring integration
+    MCM --> LOGS
+    MCM --> METRICS
+    MAIN --> LOGS
+    
+    %% Styling
+    classDef primary fill:#e1f5fe,stroke:#01579b,stroke-width:2px
+    classDef mcp fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
+    classDef processing fill:#e8f5e8,stroke:#1b5e20,stroke-width:2px
+    classDef monitoring fill:#fff3e0,stroke:#e65100,stroke-width:2px
+    
+    class MAIN,AGENT,BEDROCK primary
+    class MCM,CONFIG,ERROR,MONITOR,DIAG,KNOW,PRICE mcp
+    class PROCESSOR,MARKDOWN,FILES processing
+    class LOGS,METRICS monitoring
+```
 
-- **Model**: `apac.anthropic.claude-sonnet-4-20250514-v1:0`
-- **Region**: `ap-southeast-2` (Sydney)
-- Provides expert-level AWS Solutions Architect knowledge
-- Well-Architected Framework compliance
+## Key Components
 
-### Strands Framework
+### Core Application Layer
 
-- AI agent orchestration and tool integration
-- Seamless integration with MCP servers
-- Structured prompt engineering for consistent outputs
+- **main.py**: Application entry point with enhanced logging and error handling
+- **Strands Agent**: AI orchestration with AWS Bedrock Claude Sonnet 4 integration
+- **AWS Bedrock**: Foundation Model backend
 
-### AWS Diagram MCP Server
+### MCP (Model Context Protocol) Integration
 
-- **Server**: `awslabs.aws-diagram-mcp-server@latest`
-- **Transport**: STDIO via `uvx`
-- Generates professional AWS architecture diagrams
-- Supports multiple output formats (PNG, SVG, PDF)
-- Automatic diagram file management and organization
+- **MCP Client Manager**: Orchestrates multiple MCP server connections with retry logic and health monitoring
+- **Configuration Manager**: Loads and validates MCP server configurations with timeout and retry settings
+- **Error Handler**: Implements graceful degradation strategies when services are unavailable
+- **Performance Monitor**: Tracks operation metrics, connection health, and system performance
 
-### Documentation Generator
+### MCP Servers (External Services)
 
-- Markdown-formatted architecture documentation
-- Timestamped design records
-- Implementation backlogs with sprint planning
-- Cost optimization recommendations
+- **AWS Diagram Server**: `awslabs.aws-diagram-mcp-server@latest`
+  - Architecture diagram generation with official AWS service icons
+  - Support for multiple output formats (PNG, SVG, PDF)
+  - Automatic layout and styling for complex architectures
+  - Integration with AWS service catalog for accurate visual representation
+
+- **AWS Knowledge Server**: `awslabs.aws-documentation-mcp-server@latest`
+  - Real-time access to current AWS documentation and service specifications
+  - Best practices and implementation guidelines from AWS Well-Architected Framework
+  - Service limitations, regional availability, and feature compatibility checks
+  - Integration with AWS whitepapers and architectural guidance
+
+- **AWS Pricing Server**: `awslabs.aws-pricing-mcp-server@latest`
+  - Accurate cost estimation using current AWS pricing data
+  - Cost optimization recommendations and alternative configuration analysis
+  - Support for Reserved Instances, Savings Plans, and Spot pricing models
+  - Regional pricing variations and data transfer cost calculations
+
+### Output Processing Pipeline
+
+- **Output Processor**: Parses agent results to extract structured information (costs, references, best practices)
+- **Enhanced Markdown Generator**: Creates comprehensive documentation with cost analysis and implementation guides
+- **File Management**: Organizes generated diagrams and documentation with timestamped naming
+
+## System Flow and Data Processing
+
+```mermaid
+sequenceDiagram
+    participant User prompt(run_design_query)
+    participant Main as main.py
+    participant MCM as MCP Client Manager
+    participant Agent as Strands Agent
+    participant MCP as MCP Servers
+    participant Processor as Output Processor
+    participant Generator as Markdown Generator
+    
+    User->>Main: Submit architecture query
+    Main->>MCM: Initialize MCP clients
+    MCM->>MCP: Connect to available servers
+    MCP-->>MCM: Connection status & tools
+    MCM->>Agent: Provide aggregated tools
+    
+    Main->>Agent: Execute query with tools
+    Agent->>MCP: Generate diagrams
+    Agent->>MCP: Access AWS documentation
+    Agent->>MCP: Get pricing information
+    MCP-->>Agent: Return results
+    
+    Agent-->>Main: Complete architecture design
+    Main->>Processor: Parse agent results
+    Processor-->>Main: Structured output data
+    
+    Main->>Generator: Create enhanced documentation
+    Generator-->>Main: Formatted markdown content
+    Main->>Main: Save files with timestamps
+    
+    Main-->>User: Architecture design complete
+    
+```
+
 
 ## 📋 Prerequisites
 
@@ -74,11 +203,19 @@ pip install mcp
 # Install uvx for MCP server management
 pip install uvx
 
-# Verify AWS Diagram MCP Server availability
+# Verify AWS MCP Servers availability
 uvx awslabs.aws-diagram-mcp-server@latest --help
+uvx awslabs.aws-documentation-mcp-server@latest --help
+uvx awslabs.aws-pricing-mcp-server@latest --help
 ```
 
-## 🛠️ Installation
+The application integrates with three AWS MCP servers:
+
+- **Diagram Server**: Provides AWS service icons and professional diagram generation capabilities
+- **Knowledge Server**: Accesses real-time AWS documentation, best practices, and service specifications
+- **Pricing Server**: Delivers current pricing data, cost optimization suggestions, and financial modeling
+
+## Installation
 
 1. **Clone the repository**
 
@@ -106,7 +243,7 @@ uvx awslabs.aws-diagram-mcp-server@latest --help
    python main.py
    ```
 
-## 🎯 Usage Guide
+## Usage Guide
 
 ### Basic Usage
 
@@ -130,34 +267,15 @@ The default query designs a CloudWAN network across Melbourne and Sydney regions
 Modify the `query` variable in `main.py` to design different architectures:
 
 ```python
-query = (
-    "Design a multi-account AWS landing zone for a financial services company "
-    "requiring APRA compliance, with separate accounts for dev, test, and prod, "
-    "centralised logging, and network segmentation."
-)
+    query = (
+        "Design a real-world AWS cloudWAN network across Melbourne and Sydney "
+        "regions that must have centralised packet inspection, decentralised egress, centralied ingress"
+        "that will host web applications which serves thousands of users with low latency, strong security controls, and predictable costs."
+        "Networks are to be split via CloudWAN into network segments for secure, standard workloads"
+    )
 ```
 
-### Query Examples
-
-**Multi-Region Web Application**
-
-```python
-query = "Design a global web application architecture across 3 regions with auto-scaling, CDN, and disaster recovery"
-```
-
-**Compliance-Heavy Environment**
-
-```python
-query = "Create a HIPAA-compliant landing zone with data encryption, audit logging, and network isolation"
-```
-
-**Cost-Optimized Startup**
-
-```python
-query = "Design a cost-effective landing zone for a startup with growth potential and minimal operational overhead"
-```
-
-## 📊 Understanding Outputs
+## Understanding Outputs
 
 ### Generated Files Structure
 
@@ -174,7 +292,6 @@ outputs/
 3. **Security Controls** - Comprehensive security implementation
 4. **Implementation Backlog** - Sprint-based delivery plan
 5. **Cost Optimization** - Strategies for cost management
-6. **Next Steps** - Actionable implementation guidance
 
 ### Implementation Backlog Format
 
@@ -184,35 +301,7 @@ outputs/
 - **Dependencies** clearly identified
 - **Well-Architected Framework** alignment
 
-## 🔧 Architecture Features
-
-### Well-Architected Framework Compliance
-
-Every design adheres to the five pillars:
-
-- **Operational Excellence** - Centralized management and automation
-- **Security** - Defense in depth, encryption, access controls
-- **Reliability** - Multi-AZ deployment, disaster recovery
-- **Performance Efficiency** - Auto-scaling, caching, optimization
-- **Cost Optimization** - Right-sizing, reserved instances, monitoring
-
-### Network Architecture Patterns
-
-- **Hub and Spoke** with Transit Gateway
-- **CloudWAN** for global connectivity
-- **Centralized Inspection** with AWS Network Firewall
-- **Decentralized Egress** for cost optimization
-- **Centralized Ingress** with Global Accelerator
-
-### Security Controls
-
-- **Identity and Access Management** - Least privilege access
-- **Network Security** - VPC Flow Logs, Security Groups, NACLs
-- **Data Protection** - Encryption at rest and in transit
-- **Monitoring** - CloudTrail, CloudWatch, Config
-- **Compliance** - Ready for SOC 2, ISO 27001, APRA
-
-## 📈 Example Output
+## Example Output
 
 ### Sample Architecture Diagram
 
@@ -255,25 +344,6 @@ Every design adheres to the five pillars:
 ...
 ```
 
-## 🔄 Customization
-
-### Modifying the System Prompt
-
-Edit the `SYSTEM_PROMPT` variable in `main.py` to:
-
-- Change default region preferences
-- Add specific compliance requirements
-- Modify output format preferences
-- Include organization-specific standards
-
-### Diagram Customization
-
-The AWS Diagram MCP Server supports various customization options:
-
-- Output formats (PNG, SVG, PDF)
-- Diagram themes and styling
-- Component positioning
-- Label customization
 
 ### Output Directory Structure
 
@@ -297,40 +367,20 @@ lzbot-5000/
 └── src/                  # Source code (if expanded)
 ```
 
-### Key Functions
-
-- `extract_diagram_path()` - Parses diagram paths from agent output
-- `handle_diagram_file()` - Manages diagram file operations
-- `create_markdown_content()` - Generates formatted documentation
-
-### Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests if applicable
-5. Submit a pull request
-
-### Local Development
-
-```bash
-# Install development dependencies
-pip install -r requirements-dev.txt
-
-# Run tests
-python -m pytest
-
-# Format code
-black main.py
-
-```
-
 ## 📚 Additional Resources
 
+### AWS Resources
 - [AWS Well-Architected Framework](https://aws.amazon.com/architecture/well-architected/)
 - [AWS Landing Zone Best Practices](https://aws.amazon.com/solutions/implementations/aws-landing-zone/)
+
+### Framework and Tools
 - [Strands Framework Documentation](https://github.com/strands-ai/strands)
-- [AWS Diagram MCP Server](https://github.com/awslabs/aws-diagram-mcp-server)
+- [Model Context Protocol (MCP)](https://modelcontextprotocol.io/)
+
+### AWS MCP Servers
+- [AWS Diagram MCP Server](https://github.com/awslabs/aws-diagram-mcp-server) - Professional diagrams with AWS icons
+- [AWS Knowledge MCP Server](https://github.com/awslabs/aws-documentation-mcp-server) - Real-time AWS documentation
+- [AWS Pricing MCP Server](https://github.com/awslabs/aws-pricing-mcp-server) - Current pricing and cost optimization
 
 ## 🤝 Support
 
@@ -339,6 +389,7 @@ For issues, questions, or contributions:
 - Create an issue in the GitHub repository
 - Review existing examples in the `examples/` directory
 - Check the generated documentation for implementation guidance
+- Examine log files in `./logs/` for detailed troubleshooting information
 
 ## TODO
 
@@ -347,6 +398,7 @@ For issues, questions, or contributions:
 - [ ] add option to generate draw.io XML/mermaid diagrams
 - [ ] add confluence MCP for design publishing
 - [ ] add confluence MCP for run books
+- [x] add MCP for AWS documentation lookup
 - [ ] add jira MCP for backlogs
 - [ ] add github/gitlab integration for infrastructure-as-code
 - [ ] add CICD pipelines

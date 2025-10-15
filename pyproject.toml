@@ -11,5 +11,5 @@ dependencies = [
     "boto3",
     "botocore",
     "strands-agents",
-    "strands-agents-tools"
+    "strands-agents-tools",
 ]
